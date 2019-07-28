@@ -1,0 +1,24 @@
+---
+- name: 'Configuring http load balancing with nginx'
+  hosts: web:lb
+  become: yes
+  tasks:  
+    - name: 'install nginx in  webserver'
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes 
+    
+    - name: 'configure on lb'
+      when: ansible_nodename == "lb01"
+      template: src=default.j2 dest="/etc/nginx/sites-available/default"
+      register: content_status
+
+    - name: 'restart nginx'
+      when: 
+       - content_status.changed == true 
+       - ansible_nodename == "lb01"
+      service:
+         name: nginx
+         state: restarted
+

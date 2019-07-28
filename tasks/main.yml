@@ -1,0 +1,3 @@
+---
+# tasks file for lb_nginx
+- include_tasks: nginx-install.yml
