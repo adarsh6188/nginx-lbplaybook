@@ -1,27 +1,26 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This play book is to install and configure the nginx webservers  with loadbalancing 
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This requires nginx package available in the VM. Also, please make sure that the servers have connectivity with each other.
+
 
 Role Variables
 --------------
+The variables are provided in the /vars/main.yml. This includes the backend web server IPs. If you wish to add more web serves you can provide the server details here.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
+This play book can be run using the following steps
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Got to the directory:
+cd nginx-lbplaybook-master/tasks/
+run the command "ansible-playbook main.yml"
 
     - hosts: servers
       roles:
