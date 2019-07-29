@@ -20,18 +20,41 @@ This play book can be run using the following steps
 
 Got to the directory:
 cd nginx-lbplaybook-master/tasks/
-run the command "ansible-playbook main.yml"
+run the command
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```bash   
+ansible-playbook main.yml
+```
+The playbook will first install nginx package in all VMs.
+The function "delegate_to" is used to select the lb from the invetory to configure the nginx configuration to add the specified template.
 
-License
--------
+```bash 
+delegate_to: lb
+```
+## nginx lb configuration
 
-BSD
+```bash 
+upstream web_backend { 
+ # Uncomment for the Least Connected load balancing method: # least_conn;  
+ # The default load balancing method is round robin. Since, we didn't specified any methods the configuration will chose roundrobin
+ server '{{server_1}}'; 
+ server '{{server_2}}'; 
+}
+```
 
-Author Information
-------------------
+Once the configuartion is completed the playbook will restart.
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The following function is used to check whether there is any  configuration changes is done
+
+```bash 
+ register: content_status
+```
+If there are any chnages triggerd in the configuration the nginx will restart using the following condition
+
+```bash 
+
+ when: 
+       - content_status.changed == true 
+       - ansible_nodename == "lb01"
+```
+
